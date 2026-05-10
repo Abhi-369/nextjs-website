@@ -122,16 +122,16 @@ eventSchema.pre("save", function (next) {
   for (const field of requiredTextFields) {
     const value = this[field];
     if (typeof value !== "string" || value.trim().length === 0) {
-      return next(new Error(`Field "${field}" is required and cannot be empty.`));
+      throw new Error(`Field "${field}" is required and cannot be empty.`)
     }
   }
 
   if (!Array.isArray(this.agenda) || this.agenda.length === 0 || this.agenda.some((item) => item.trim().length === 0)) {
-    return next(new Error('Field "agenda" must contain at least one non-empty item.'));
+    throw new Error('Field "agenda" must contain at least one non-empty item.')
   }
 
   if (!Array.isArray(this.tags) || this.tags.length === 0 || this.tags.some((item) => item.trim().length === 0)) {
-    return next(new Error('Field "tags" must contain at least one non-empty item.'));
+    throw new Error('Field "tags" must contain at least one non-empty item.')
   }
 
   // Regenerate slug only when title changes (or slug is missing).
@@ -145,10 +145,10 @@ eventSchema.pre("save", function (next) {
     this.time = normalizeTime(this.time);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Invalid date or time.";
-    return next(new Error(message));
+    throw new Error(message)
   }
 
-  return next();
+  // return next();
 });
 
 const Event: Model<IEvent> =
