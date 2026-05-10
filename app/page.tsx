@@ -2,10 +2,17 @@ import Hello from "@/components/hello";
 import React from "react";
 import ExploreBtn from "@/components/ExploreBtn";
 import EventCard from "@/components/EventCard";
-import {events} from "@/lib/constants";
+import {IEvent} from "@/database/event.model";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
 
-const Home = () => {
-    // console.log('what is the home');
+const Page = async () => {
+
+    const response = await fetch(`${BASE_URL}/api/events`)
+    console.log("loaded pafe")
+    const {events} = await response.json();
+
+    console.log('what is the home', response.json());
+
     return (
         <section>
             <h1 className="text-center">The Hub for Every Dev <br/> Event You Can't Miss</h1>
@@ -15,15 +22,15 @@ const Home = () => {
                 <h1>Fearured Events</h1>
 
                 <ul className="events">
-                    {events.map((event) => (
-                        <li key={event.title}>
-                            <EventCard {...event} />
-                        </li>
-                    ))}
+                    {/*{events && events.length > 0 && events.map((event: IEvent) => (*/}
+                    {/*    <li key={event.title}>*/}
+                    {/*        <EventCard {...event} />*/}
+                    {/*    </li>*/}
+                    {/*))}*/}
                 </ul>
 
             </div>
         </section>
     )
 }
-export default Home
+export default Page
